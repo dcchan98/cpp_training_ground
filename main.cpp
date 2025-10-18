@@ -9,12 +9,27 @@ do { \
 std::cout << "Line " << __LINE__ << " : " << #x << " =============================================================\n"; \
 pprint(x); \
 std::cout << "=====================================================================================================\n"; \
-} while(0)
+} while(0);
 
 #include <bits/stdc++.h>
 using namespace std;
 // ********************** Modify Code Below ***********************************************************************
 
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen; // number -> index
+        for (int i = 0; i < nums.size(); ++i) {
+            int complement = target - nums[i];
+            if (seen.count(complement)) {
+                return {seen[complement], i};
+            }
+            seen[nums[i]] = i;
+        }
+        return {}; // just in case no solution is found
+    }
+};
+
 int main(){
- print("hello");
+    Solution s;
 }

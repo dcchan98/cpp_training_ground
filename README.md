@@ -1,9 +1,3 @@
-# Todo
-
-2. Make include directory and add in generated file for pprint
-3. Document the link of pprint if i want to update my hpp file
-4. Create python script to generate single file for OJ and also copy to clipboard in that script
-5. Make read me nice
 # cpp_training_ground
 
 # TODO cpp is cool and all, and using it makes you feel like a bad ass. These tools make you feel more bad ass, and remove some clunky parts by having a cooler print which python does better (the only thing it does better lel) 
@@ -16,6 +10,12 @@
 Generate full file, run and copy to clipboard
 ```bash
 python3 run_generate_and_copy.py  --run --copy 
+```
+
+leetcode mode
+```bash
+python3 run_generate_and_copy.py  --run  
+python3 run_generate_and_copy.py --remove_prints --single_class Solution --copy
 ```
 
 Generate full file and removing print statements ( Modify )
@@ -59,3 +59,10 @@ g++ -std=c++23 dc_notes.cpp -o bin/dc_notes
 ./bin/dc_notes      # for mac and linux
 # bin\dc_notes.exe  # for windows
 ```
+
+# Todo
+
+- Experiment if i can add run configurations to github
+  - If yes > create read me section
+- Make python script better and more maintanable 
+- Make read me nice
