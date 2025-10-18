@@ -18,7 +18,61 @@ REMOVE_PREFIXES = ["print", "pprint"]
 
 # --------------
 INCLUDE_PATTERN = re.compile(r'#\s*include\s*[<"].*[>"]')
+# --- after reading headers and main_code ---
+def extract_class(code: str, class_name: str) -> str:
+    """
+    Extract a single C++ class definition by name.
+    Assumes well-formed code and braces match correctly.
+    """
+    if not class_name:
+        return code
 
+    pattern = re.compile(rf'class\s+{class_name}\b.*?{{', re.DOTALL)
+    match = pattern.search(code)
+    if not match:
+        print(f"⚠️ Class '{class_name}' not found in code.")
+        return ""
+
+    start_idx = match.start()
+    brace_count = 0
+    inside_class = False
+    extracted_lines = []
+
+    for line in code[match.start():].splitlines():
+        if '{' in line:
+            brace_count += line.count('{')
+            inside_class = True
+        if '}' in line:
+            brace_count -= line.count('}')
+        if inside_class:
+            extracted_lines.append(line)
+        if inside_class and brace_count == 0:
+            break
+
+    return "\n".join(extracted_lines)
+
+def copy_to_clipboard(file_path: Path):
+    """Copy the content of file_path to the system clipboard."""
+    system = platform.system()
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        if system == "Darwin":  # macOS
+            p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
+            p.communicate(input=content.encode())
+        elif system == "Windows":
+            p = subprocess.Popen(['clip'], stdin=subprocess.PIPE)
+            p.communicate(input=content.encode())
+        elif system == "Linux":
+            # Requires xclip or xsel installed
+            p = subprocess.Popen(['xclip', '-selection', 'clipboard'], stdin=subprocess.PIPE)
+            p.communicate(input=content.encode())
+        else:
+            print(f"⚠️ Unsupported OS: {system}")
+            return
+        print(f"📋 Copied {file_path} to clipboard!")
+    except Exception as e:
+        print(f"❌ Failed to copy to clipboard: {e}")
 def clean_code(code: str, remove_prints=False) -> str:
     cleaned_lines = []
     for line in code.splitlines():
@@ -75,12 +129,13 @@ def main():
     parser = argparse.ArgumentParser(description="Generate single-file C++ source.")
     parser.add_argument("--remove_prints", action="store_true",
                         help="Remove lines starting with print or pprint")
-    parser.add_argument("--dummy_bool", action="store_true",
-                        help="A boolean parameter that does nothing")
-    parser.add_argument("--dummy_string", type=str, default="",
-                        help="A string parameter that does nothing")
     parser.add_argument("--run", action="store_true",
                         help="Compile and run the generated C++ file")
+    parser.add_argument("--copy", action="store_true",
+                        help="Copy generated C++ file to clipboard")
+    parser.add_argument("--single_class", type=str, default="",
+                    help="Only include the specified class in the generated file (Such as for LeetCode which only needs Solution)")
+
     args = parser.parse_args()
 
     os.makedirs(ROOT / "bin", exist_ok=True)
@@ -104,14 +159,12 @@ def main():
         f.write("\n".join(combined))
 
     print(f"✅ Generated {OUTPUT_FILE.relative_to(ROOT)}")
-    if args.dummy_bool:
-        print("⚠️ dummy_bool set (does nothing)")
-    if args.dummy_string:
-        print(f"⚠️ dummy_string: {args.dummy_string} (does nothing)")
 
     if args.run:
         if compile_cpp(OUTPUT_FILE, BINARY_FILE):
             run_binary(BINARY_FILE)
+    if args.copy:
+        copy_to_clipboard(OUTPUT_FILE)
 
 if __name__ == "__main__":
     main()

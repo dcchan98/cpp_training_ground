@@ -13,9 +13,9 @@
 
 # Python generation
 
-Generate full file 
+Generate full file, run and copy to clipboard
 ```bash
-python3 run_generate_and_copy.py --run
+python3 run_generate_and_copy.py  --run --copy 
 ```
 
 Generate full file and removing print statements ( Modify )
@@ -27,12 +27,10 @@ python3 run_generate_and_copy.py --remove_prints --run
   - Generate single file and copy all
   - optional flag to remove print and pprint and cout
   - optional flag to run 
-  
-  
-  - optional flag to copy to clipboard 
-  - leetcode mode 
-      - optional flag to remove main (for leetcode)
-      - optional parameter (class name) to have generated file only include that class  (for leetcode)
+  - optional flag to copy to clipboard
+
+
+  - single_class python parameter, follow by the class name to copy , for leetcode as leetcode submissions just require the Solution class
 
 # TODO Clion being free for practice , and good ui, and me being a fan of jetbrains, and setting up run configs to use std=c++23 , as well as run config for python
 
