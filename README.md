@@ -15,13 +15,13 @@
 
 Generate full file 
 ```bash
-python3 run_generate_and_copy.py --remove_prints
+python3 run_generate_and_copy.py --run
 ```
 
 Generate full file and removing print statements ( Modify )
 To modify exclusion lines , change `REMOVE_PREFIXES` variable inside file `run_generate_and_copy.py` 
 ```bash
-python3 run_generate_and_copy.py --remove_prints
+python3 run_generate_and_copy.py --remove_prints --run 
 ```
 - commands for python script 
   - Generate single file and copy all

@@ -3,12 +3,15 @@ import os
 import re
 from pathlib import Path
 import argparse
+import subprocess
+import platform
 
 # --- CONFIG ---
 ROOT = Path(__file__).parent
 SRC_DIRS = [ROOT / "cp_util", ROOT / "include"]
 MAIN_FILE = ROOT / "main.cpp"
 OUTPUT_FILE = ROOT / "bin" / "combined.cpp"
+BINARY_FILE = ROOT / "bin" / "main"  # compiled executable
 
 # Lines to remove if `--remove_prints` is set
 REMOVE_PREFIXES = ["print", "pprint"]
@@ -46,6 +49,28 @@ def gather_headers(dirs, remove_prints=False):
                 headers.append(f"\n// ===== {path.relative_to(ROOT)} =====\n{content}\n")
     return headers
 
+def compile_cpp(source: Path, output: Path):
+    os.makedirs(output.parent, exist_ok=True)
+    compile_cmd = ["g++", "-std=c++23", str(source), "-o", str(output)]
+    print(f"🛠️ Compiling: {' '.join(compile_cmd)}")
+    result = subprocess.run(compile_cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        print("❌ Compilation failed:")
+        print(result.stderr)
+        return False
+    print(f"✅ Compiled successfully: {output}")
+    return True
+
+def run_binary(binary: Path):
+    print(f"▶️ Running: {binary}")
+    if platform.system() == "Windows":
+        run_cmd = [str(binary) + ".exe"]
+    else:
+        run_cmd = [str(binary)]
+    result = subprocess.run(run_cmd, text=True)
+    if result.returncode != 0:
+        print(f"⚠️ Program exited with code {result.returncode}")
+
 def main():
     parser = argparse.ArgumentParser(description="Generate single-file C++ source.")
     parser.add_argument("--remove_prints", action="store_true",
@@ -54,6 +79,8 @@ def main():
                         help="A boolean parameter that does nothing")
     parser.add_argument("--dummy_string", type=str, default="",
                         help="A string parameter that does nothing")
+    parser.add_argument("--run", action="store_true",
+                        help="Compile and run the generated C++ file")
     args = parser.parse_args()
 
     os.makedirs(ROOT / "bin", exist_ok=True)
@@ -81,6 +108,10 @@ def main():
         print("⚠️ dummy_bool set (does nothing)")
     if args.dummy_string:
         print(f"⚠️ dummy_string: {args.dummy_string} (does nothing)")
+
+    if args.run:
+        if compile_cpp(OUTPUT_FILE, BINARY_FILE):
+            run_binary(BINARY_FILE)
 
 if __name__ == "__main__":
     main()
