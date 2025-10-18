@@ -2,44 +2,65 @@
 import os
 import re
 from pathlib import Path
+import argparse
 
 # --- CONFIG ---
 ROOT = Path(__file__).parent
 SRC_DIRS = [ROOT / "cp_util", ROOT / "include"]
 MAIN_FILE = ROOT / "main.cpp"
 OUTPUT_FILE = ROOT / "bin" / "combined.cpp"
-# --------------
 
+# Lines to remove if `--remove_prints` is set
+REMOVE_PREFIXES = ["print", "pprint"]
+
+# --------------
 INCLUDE_PATTERN = re.compile(r'#\s*include\s*[<"].*[>"]')
 
-def clean_code(code: str) -> str:
+def clean_code(code: str, remove_prints=False) -> str:
     cleaned_lines = []
     for line in code.splitlines():
         stripped = line.strip()
+
         # Removal of pragma once
         if stripped.startswith("#pragma once"):
             continue
+
         # Remove all #include lines except '#include <bits/stdc++.h>'
-        if stripped.startswith("#include"):
-            if "<bits/stdc++.h>" not in line:
-                continue  # skip non-bits includes
+        if stripped.startswith("#include") and "<bits/stdc++.h>" not in stripped:
+            continue
+
+        # Optional removal of print/pprint lines
+        if remove_prints:
+            if any(stripped.startswith(prefix) for prefix in REMOVE_PREFIXES):
+                continue
+
         cleaned_lines.append(line)
     return "\n".join(cleaned_lines)
 
-def gather_headers(dirs):
+def gather_headers(dirs, remove_prints=False):
     headers = []
     for d in dirs:
         for path in sorted(d.glob("**/*.hpp")):
             with open(path, "r", encoding="utf-8") as f:
-                content = clean_code(f.read())
+                content = clean_code(f.read(), remove_prints=remove_prints)
                 headers.append(f"\n// ===== {path.relative_to(ROOT)} =====\n{content}\n")
     return headers
 
 def main():
+    parser = argparse.ArgumentParser(description="Generate single-file C++ source.")
+    parser.add_argument("--remove_prints", action="store_true",
+                        help="Remove lines starting with print or pprint")
+    parser.add_argument("--dummy_bool", action="store_true",
+                        help="A boolean parameter that does nothing")
+    parser.add_argument("--dummy_string", type=str, default="",
+                        help="A string parameter that does nothing")
+    args = parser.parse_args()
+
     os.makedirs(ROOT / "bin", exist_ok=True)
-    headers = gather_headers(SRC_DIRS)
+
+    headers = gather_headers(SRC_DIRS, remove_prints=args.remove_prints)
     with open(MAIN_FILE, "r", encoding="utf-8") as f:
-        main_code = clean_code(f.read())
+        main_code = clean_code(f.read(), remove_prints=args.remove_prints)
 
     combined = [
         "// ==============================================",
@@ -56,6 +77,10 @@ def main():
         f.write("\n".join(combined))
 
     print(f"✅ Generated {OUTPUT_FILE.relative_to(ROOT)}")
+    if args.dummy_bool:
+        print("⚠️ dummy_bool set (does nothing)")
+    if args.dummy_string:
+        print(f"⚠️ dummy_string: {args.dummy_string} (does nothing)")
 
 if __name__ == "__main__":
     main()

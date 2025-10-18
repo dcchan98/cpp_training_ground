@@ -11,6 +11,18 @@
 
 # cp qol (code forces and leetcode)
 
+# Python generation
+
+Generate full file 
+```bash
+python3 run_generate_and_copy.py --remove_prints
+```
+
+Generate full file and removing print statements ( Modify )
+To modify exclusion lines , change `REMOVE_PREFIXES` variable inside file `run_generate_and_copy.py` 
+```bash
+python3 run_generate_and_copy.py --remove_prints
+```
 - commands for python script 
   - Generate single file and copy all
   - optional flag to remove print and pprint and cout
