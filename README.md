@@ -6,20 +6,41 @@
 5. Make read me nice
 # cpp_training_ground
 
-# Running
+# TODO cpp is cool and all, and using it makes you feel like a bad ass. These tools make you feel more bad ass, and remove some clunky parts by having a cooler print which python does better (the only thing it does better lel) 
+
+
+# cp qol (code forces and leetcode)
+
+- commands for python script 
+  - Generate single file and copy all
+  - optional flag to remove print and pprint and cout
+  - optional flag to remove main (for leetcode)
+  - optional parameter (class name) to have generated file only include that class  (for leetcode)
+
+# TODO Clion being free for practice , and good ui, and me being a fan of jetbrains, and setting up run configs to use std=c++23 , as well as run config for python
+
+# 
+
+# Run commands
 
 ## Compile and run
 
 main
 ```bash
-g++ -std=c++23 main.cpp -o main
-./main # for mac and linux
-# main.exe # for windows
+# Compile
+g++ -std=c++23 main.cpp -o bin/main
+
+# Run
+./bin/main      # for mac and linux
+# bin\main.exe  # for windows
 ```
 
 notes
 ```bash
-g++ -std=c++23 dc_notes.cpp -o dc_notes
-./dc_notes # for mac and linux
-# dc_notes.exe # for windows
+# Compile
+g++ -std=c++23 dc_notes.cpp -o bin/dc_notes
+
+# Run
+./bin/dc_notes      # for mac and linux
+# bin\dc_notes.exe  # for windows
 ```
