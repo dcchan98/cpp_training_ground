@@ -40,13 +40,13 @@ int main () {
     // this removes the need for dp2d below
     vector<vector<int> > dp2d(m, vector<int>(n, -INFINITY));
 
-    // useful syntax for recursive lambdas
-    auto fib = [&](this auto func, int n) -> int {
+    // useful syntax for recursive lambdas - fib
+    auto recurse = [&](this auto func, int n) -> int {
         if (n == 1) { return 0; }
         if (n == 2) { return 1; }
         return func(n - 1) + func(n - 2);
     };
-    print(fib(5));
+    print(recurse(5));
 
     return 0;
 }

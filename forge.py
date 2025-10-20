@@ -146,12 +146,27 @@ def compile_cpp(source: Path, output: Path):
     return True
 
 def run_binary(binary: Path):
-    print(f"▶️ Running: {binary}")
+    """Run the compiled binary and clearly sandwich its output in the terminal."""
+    print(f"▶️ Running: {binary}\n")
+
     if platform.system() == "Windows":
         run_cmd = [str(binary) + ".exe"]
     else:
         run_cmd = [str(binary)]
+
+    # Print start sandwich
+    print("\n" + "="*80)
+    print("🔥 Binary Output Start 🔥")
+    print("="*80 + "\n")
+
+    # Run the binary
     result = subprocess.run(run_cmd, text=True)
+
+    # Print end sandwich
+    print("\n" + "="*80)
+    print("🔥 Binary Output End 🔥")
+    print("="*80 + "\n")
+
     if result.returncode != 0:
         print(f"⚠️ Program exited with code {result.returncode}")
 

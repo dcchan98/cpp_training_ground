@@ -6,9 +6,11 @@
 using namespace cpprint;
 #define print(x) \
 do { \
-std::cout << "Line " << __LINE__ << " : " << #x << " =============================================================\n"; \
+constexpr int width = 80; \
+std::string line(width, '='); \
+std::cout << "Line " << __LINE__ << " : " << #x << "\n" << line << "\n"; \
 pprint(x); \
-std::cout << "=====================================================================================================\n"; \
+std::cout << line << "\n"; \
 } while(0);
 
 #include <bits/stdc++.h>
@@ -31,5 +33,5 @@ public:
 };
 
 int main(){
-
+    print("hello");
 }
