@@ -45,6 +45,4 @@ int main() {
     // 2) showcase 2 forge
     // 3) showcase debug mode
     vector<vector<int> > dp(5, vector<int>(6, -1));
-    print("ab", "cd", dp)
-    print("ab", "cd", dp)
 }
