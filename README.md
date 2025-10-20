@@ -54,7 +54,7 @@ pprint(mat);
 ```
 
 [![Demo Video](https://img.youtube.com/vi/jbv2QQTHM5w/0.jpg)](https://youtu.be/jbv2QQTHM5w)  
-**▶️ Watch Demo**
+**▶️ Watch Demo in the link above**
 
 ---
 
