@@ -33,5 +33,14 @@ public:
 };
 
 int main(){
-    print("hello");
+    vector<int> nums = {1,2,3,10};
+    int target = 11;
+
+    Solution s;
+    // Demo
+    // 1) Add print statements for seen, and for nums
+    // 2) showcase 2 forge
+    // 3) showcase debug mode
+    print(s.twoSum(nums,11));
+
 }

@@ -77,7 +77,8 @@ g++ -std=c++23 main.cpp -o bin/main
 ### 🔧 Regular Mode (All the code wanted)
 Generate the full combined file, compile, and copy to clipboard:
 ```bash
-python3 forge.py --remove_prints --run --copy
+python3 forge.py --run
+python3 forge.py --remove_prints --copy
 ```
 ### 💡 LeetCode Mode (Only single class wanted)
 Generate and copy only the `Solution` class version:

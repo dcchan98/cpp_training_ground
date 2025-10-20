@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="[forge] Regular mode (run and copy single)" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="python3 forge.py --remove_prints  --run --copy " />
+    <option name="SCRIPT_TEXT" value="python3 forge.py --run &amp;&amp; python3 forge.py --remove_prints --copy" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />
