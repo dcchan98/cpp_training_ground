@@ -4,17 +4,8 @@
 #include "cp_util/dc_funcs.hpp"
 #include "include/cpprint.hpp"
 using namespace cpprint;
-#define print(...) \
-do { \
-    constexpr int width = 80; \
-    std::string line(width, '='); \
-    std::cout << "Line " << __LINE__ << " : " << #__VA_ARGS__ << "\n" << line << "\n"; \
-    variadic_print(__VA_ARGS__); \
-    std::cout << line << "\n"; \
-} while(0);
-
-template<typename... Args>
-void variadic_print(const Args &... args) { ((std::cout << generate_container_string_recursively(args) << "\n"), ...); }
+#define print(...) do { constexpr int w=80; std::string l(w,'='); std::cout<<"Line "<<__LINE__<<" : "<<#__VA_ARGS__<<"\n"<<l<<"\n"; pprint(__VA_ARGS__); std::cout<<l<<"\n"; } while(0);
+#define printi(...) do { constexpr int w=80; std::string l(w,'='); std::cout<<"Line "<<__LINE__<<" : "<<#__VA_ARGS__<<"\n"<<l<<"\n"; pprint_inline(__VA_ARGS__); std::cout<<"\n"<<l<<"\n"; } while(0);
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -45,4 +36,6 @@ int main() {
     // 2) showcase 2 forge
     // 3) showcase debug mode
     vector<vector<int> > dp(5, vector<int>(6, -1));
+    printi("dp", dp)
+    print("dp", dp)
 }

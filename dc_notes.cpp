@@ -4,14 +4,9 @@
 #include "cp_util/dc_funcs.hpp"
 #include "include/cpprint.hpp"
 using namespace cpprint;
-#define print(...) \
-do { \
-    constexpr int width = 80; \
-    std::string line(width, '='); \
-    std::cout << "Line " << __LINE__ << " : " << #__VA_ARGS__ << "\n" << line << "\n"; \
-    variadic_print(__VA_ARGS__); \
-    std::cout << line << "\n"; \
-} while(0);
+#define print(...) do { constexpr int w=80; std::string l(w,'='); std::cout<<"Line "<<__LINE__<<" : "<<#__VA_ARGS__<<"\n"<<l<<"\n"; pprint(__VA_ARGS__); std::cout<<l<<"\n"; } while(0);
+#define printi(...) do { constexpr int w=80; std::string l(w,'='); std::cout<<"Line "<<__LINE__<<" : "<<#__VA_ARGS__<<"\n"<<l<<"\n"; pprint_inline(__VA_ARGS__); std::cout<<"\n"<<l<<"\n"; } while(0);
+
 
 template<typename... Args>
 void variadic_print(const Args &... args) { ((std::cout << generate_container_string_recursively(args) << "\n"), ...); }
