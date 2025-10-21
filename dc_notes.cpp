@@ -40,13 +40,21 @@ int main () {
     // this removes the need for dp2d below
     vector<vector<int> > dp2d(m, vector<int>(n, -INFINITY));
 
-    // useful syntax for recursive lambdas - fib
+    // useful syntax for recursive lambdas C++23 and later
     auto recurse = [&](this auto func, int n) -> int {
-        if (n == 1) { return 0; }
-        if (n == 2) { return 1; }
+        if (n == 0) { return 0; }
+        if (n == 1) { return 1; }
         return func(n - 1) + func(n - 2);
     };
     print(recurse(5));
+
+    // useful syntax for recursive lambdas C++14 and later (remove [this], add function name as param for itself)
+    auto recurse_pre = [&](auto func, int n) -> int {
+        if (n == 0) { return 0; }
+        if (n == 1) { return 1; }
+        return func(func,n - 1) + func(func,n - 2);
+    };
+    print(recurse_pre(recurse_pre,5));
 
     return 0;
 }
